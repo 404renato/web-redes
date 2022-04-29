@@ -1,10 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import CrateIcon from '../../assets/crate-icon.png'
 
-const Item = () => {
+export type PackageProps = {
+    name: string
+    amount: number
+    code: string
+    batch: string
+    origin: string
+    expiringDate: string
+    manufacturingDate: string
+}
+interface ItemProps {
+    pck: {
+        name: string
+        amount: number
+        code: string
+        batch: string
+        origin: string
+        expiringDate: string
+        manufacturingDate: string
+    }
+    selected: boolean
+    setSelected: () => void
+}
+
+const Item = ({ pck, selected, setSelected }: ItemProps) => {
     return (
-        <div id="package-list-item">
+        <div
+            id="package-list-item"
+            onClick={() => {
+                setSelected()
+            }}
+            style={{
+                border: selected ? '3px solid #00B2FF' : '3px solid transparent'
+            }}
+        >
             <div
                 style={{
                     float: 'left',
@@ -22,9 +53,9 @@ const Item = () => {
                     marginBottom: 15
                 }}
             >
-                <p id="package-list-item-name">Nome do Pacote</p>
+                <p id="package-list-item-name">{pck.name}</p>
                 <p id="package-list-item-amount">
-                    Quantidade: <span>20</span>
+                    Quantidade: <span>{pck.amount}</span>
                 </p>
             </div>
 
@@ -38,13 +69,13 @@ const Item = () => {
                     }}
                 >
                     <p id="package-list-item-field">
-                        Código: <span>2</span>
+                        Código: <span>{pck.code}</span>
                     </p>
                     <p id="package-list-item-field">
-                        Lote: <span>2</span>
+                        Lote: <span>{pck.batch}</span>
                     </p>
                     <p id="package-list-item-field">
-                        Origem: <span>2</span>
+                        Origem: <span>{pck.origin}</span>
                     </p>
                 </div>
 
@@ -55,10 +86,10 @@ const Item = () => {
                     }}
                 >
                     <p id="package-list-item-field">
-                        Fabricação: <span>25/04/2022</span>
+                        Fabricação: <span>{pck.manufacturingDate}</span>
                     </p>
                     <p id="package-list-item-field">
-                        Validade: <span>25/04/2022</span>
+                        Validade: <span>{pck.expiringDate}</span>
                     </p>
                 </div>
             </div>

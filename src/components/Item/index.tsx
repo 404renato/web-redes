@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import CrateIcon from '../../assets/crate-icon.png'
+import { PackageProps } from '../../types'
+import { useReduxState } from '../../hooks/useReduxState'
+import { useDispatch } from 'react-redux'
+import { setPackage } from '../../store/features/packageDetailsSlice'
 
-export type PackageProps = {
-    name: string
-    amount: number
-    code: string
-    batch: string
-    origin: string
-    expiringDate: string
-    manufacturingDate: string
-}
 interface ItemProps {
-    pck: {
-        name: string
-        amount: number
-        code: string
-        batch: string
-        origin: string
-        expiringDate: string
-        manufacturingDate: string
-    }
+    pck: PackageProps
     selected: boolean
     setSelected: () => void
 }
 
 const Item = ({ pck, selected, setSelected }: ItemProps) => {
+    const dispatch = useDispatch()
+
     return (
         <div
             id="package-list-item"
             onClick={() => {
                 setSelected()
+                dispatch(setPackage(!selected ? pck : null))
             }}
             style={{
                 border: selected ? '3px solid #00B2FF' : '3px solid transparent'

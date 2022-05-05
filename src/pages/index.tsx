@@ -6,7 +6,9 @@ import Header from '../components/Header'
 import Form from '../components/Form'
 
 const Home: NextPage = () => {
-    const [selected, setSelected] = useState(-1)
+    const [selected, setSelected] = useState('')
+    const [searchCode, setSearchCode] = useState('')
+    const [take, setTake] = useState('')
 
     return (
         <div>
@@ -33,6 +35,7 @@ const Home: NextPage = () => {
                     <PackageList
                         selected={selected}
                         setSelected={setSelected}
+                        searchCode={searchCode}
                     />
                 </div>
 
@@ -46,6 +49,7 @@ const Home: NextPage = () => {
                         <Form
                             placeholder="ex: 123456789"
                             buttonText="Pesquisar"
+                            onChange={setSearchCode}
                         />
 
                         <h1
@@ -60,7 +64,10 @@ const Home: NextPage = () => {
                         <Form
                             placeholder="ex: 10"
                             buttonText="Retirar"
-                            disabled={selected === -1 ? true : false}
+                            button
+                            disabled={!selected}
+                            onChange={setTake}
+                            onSubmit={setTake}
                         />
                     </div>
 

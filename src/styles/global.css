@@ -1,12 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* General */
 * {
-    margin: 0;
+    @apply m-0
 }
 
 body {
-    background-color: #F5F5F5;
-    margin: 0px 100px 0px 100px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    @apply bg-zinc-800
 }
 
 p, span {
@@ -88,8 +90,6 @@ p, span {
 }
 
 #package-list-item-line {
-
-    width: 92.5%;
     height: 1px;
     background-color: #E0E0E0;
     clear: both;
@@ -188,13 +188,12 @@ p, span {
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #00B2FF;
+    background: #1D4ED8;
     border-radius: 32px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #25BDFF;
+    background: #3B82F6;
   }
-
 

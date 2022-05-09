@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import PackageList from '../components/PackageList'
 import Header from '../components/Header'
 import Form from '../components/Form'
+import Head from 'next/head'
 
 const Caixa: NextPage = () => {
-    const [selected, setSelected] = useState(-1)
+    const [selected, setSelected] = useState('')
+    const [searchCode, setSearchCode] = useState('')
+    const [take, setTake] = useState('')
 
     return (
         <div>
@@ -19,59 +21,56 @@ const Caixa: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main>
-                <h1
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 56,
-                        marginBottom: 30
-                    }}
-                >
-                    Caixa
-                </h1>
-                <div style={{ float: 'left' }}>
-                    <PackageList
-                        selected={selected}
-                        setSelected={setSelected}
-                    />
-                </div>
+            <main className="mx-28">
+                <header className="mt-3 mb-7">
+                    <h1 className="text-center text-5xl font-bold text-zinc-300">
+                        Caixa
+                    </h1>
+                </header>
 
-                <div style={{ float: 'right' }}>
-                    <div id="form-container">
-                        <Header
-                            title="Digite o Código do Produto"
-                            bgColor="#00B2FF"
-                        />
-
-                        <Form
-                            placeholder="ex: 123456789"
-                            buttonText="Pesquisar"
-                        />
-
-                        <h1
-                            style={{
-                                marginLeft: '2.5%',
-                                marginTop: 30,
-                                color: '#00B2FF'
-                            }}
-                        >
-                            Quantidade
-                        </h1>
-                        <Form
-                            placeholder="ex: 10"
-                            buttonText="Vender"
-                            disabled={selected === -1 ? true : false}
+                <div className="flex">
+                    <div className="mr-16">
+                        <PackageList
+                            selected={selected}
+                            setSelected={setSelected}
+                            searchCode={searchCode}
                         />
                     </div>
 
-                    <div style={{ marginTop: 30 }}>
-                        <form action="/" id="button-container">
-                            <input
-                                type="submit"
-                                value="Trocar para Modo Estoque"
-                                id="button-submit"
-                            />
-                        </form>
+                    <div className="flex flex-col ml-16 items-center">
+                        <div>
+                            <div id="form-container">
+                                <Header title="Digite o Código do Produto" />
+
+                                <Form
+                                    placeholder="ex: 123456789"
+                                    buttonText="Pesquisar"
+                                    onChange={setSearchCode}
+                                />
+
+                                <h1 className="text-2xl ml-3 mt-9 text-blue-500">
+                                    Quantidade
+                                </h1>
+                                <Form
+                                    placeholder="ex: 10"
+                                    buttonText="Vender"
+                                    button
+                                    disabled={!selected}
+                                    onChange={setTake}
+                                    take={take}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mt-10">
+                            <form action="/">
+                                <input
+                                    type="submit"
+                                    value="Trocar para Modo Estoque"
+                                    className="w-70 h-24 bg-blue-500 rounded-xl p-5 text-white text-xl font-bold hover:bg-blue-600 transition-colors"
+                                />
+                            </form>
+                        </div>
                     </div>
                 </div>
             </main>

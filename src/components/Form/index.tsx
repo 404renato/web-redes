@@ -37,7 +37,7 @@ const Form = ({
 
             {button ? (
                 <button
-                    id="form-submit"
+                    className=" w-24 h-11 ml-5 rounded-md bg-blue-700 text-white font-medium text-xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                     disabled={disabled}
                     onClick={() => {
                         if (packagesDetails.value) {

@@ -17,9 +17,12 @@ const PackageList = ({
     const { packages } = useReduxState()
 
     return (
-        <div id="package-list-container">
-            <Header title="Lista de Pacotes" bgColor="#00FF77" />
-            <div id="package-list-content">
+        <div className="w-[25rem] h-full bg-zinc-700 rounded-lg">
+            <Header title="Lista de Pacotes" />
+            <div
+                id="package-list-content"
+                className="flex flex-col items-center"
+            >
                 {packages.value
                     .filter((item) => {
                         if (searchCode === '') return true

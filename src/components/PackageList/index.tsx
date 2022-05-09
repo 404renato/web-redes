@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from '../Header'
 import Item from '../Item'
+import Header from '../Header'
 import { useReduxState } from '../../hooks/useReduxState'
 
 interface PackageListProps {
@@ -14,29 +14,18 @@ const PackageList = ({
     setSelected,
     searchCode
 }: PackageListProps) => {
-    const { packages, packagesDetails } = useReduxState()
+    const { packages } = useReduxState()
 
     return (
         <div id="package-list-container">
             <Header title="Lista de Pacotes" bgColor="#00FF77" />
             <div id="package-list-content">
-                {/* {packages.value.map((item, index) => (
-                    <Item
-                        pck={item}
-                        selected={selected === index}
-                        setSelected={() => {
-                            selected === index
-                                ? setSelected(-1)
-                                : setSelected(index)
-                        }}
-                    />
-                ))} */}
                 {packages.value
                     .filter((item) => {
                         if (searchCode === '') return true
                         if (item.code.includes(searchCode)) return item
                     })
-                    .map((item, index) => (
+                    .map((item) => (
                         <Item
                             pck={item}
                             selected={selected === item.code}

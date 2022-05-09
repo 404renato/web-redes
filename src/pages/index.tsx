@@ -67,7 +67,7 @@ const Home: NextPage = () => {
                             button
                             disabled={!selected}
                             onChange={setTake}
-                            onSubmit={setTake}
+                            take={take}
                         />
                     </div>
 

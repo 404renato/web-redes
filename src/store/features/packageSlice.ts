@@ -40,6 +40,13 @@ export const packagesSlice = createSlice({
             state.value.filter((item) => item === action.payload)
         },
 
+        updatePackage: (state, action: PayloadAction<PackageProps>) => {
+            const index = state.value.findIndex(
+                (item) => item.code === action.payload.code
+            )
+            state.value[index] = action.payload
+        },
+
         deletePackage: (state, action: PayloadAction<string>) => {
             const index = state.value.findIndex(
                 (item) => item.code === action.payload
@@ -50,6 +57,7 @@ export const packagesSlice = createSlice({
     }
 })
 
-export const { readPackage, deletePackage } = packagesSlice.actions
+export const { addPackage, readPackage, updatePackage, deletePackage } =
+    packagesSlice.actions
 
 export default packagesSlice.reducer

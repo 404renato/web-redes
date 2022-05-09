@@ -1,4 +1,8 @@
-import React, { ChangeEvent, ChangeEventHandler } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useReduxState } from '../../hooks/useReduxState'
+import { setPackage } from '../../store/features/packageDetailsSlice'
+import { deletePackage, updatePackage } from '../../store/features/packageSlice'
 
 interface FormProps {
     placeholder: string
@@ -6,7 +10,7 @@ interface FormProps {
     disabled?: boolean
     button?: boolean
     onChange: (text: string) => void
-    onSubmit?: (text: string) => void
+    take?: string
 }
 
 const Form = ({
@@ -15,8 +19,11 @@ const Form = ({
     disabled = false,
     button,
     onChange,
-    onSubmit
+    take = ''
 }: FormProps) => {
+    const { packagesDetails } = useReduxState()
+    const dispatch = useDispatch()
+
     return (
         <div id="form-form">
             <input
@@ -28,11 +35,36 @@ const Form = ({
                 onChange={(e) => onChange(e.target.value)}
             />
 
-            {button && onSubmit ? (
+            {button ? (
                 <button
-                    onSubmit={() => console.log('a')}
                     id="form-submit"
                     disabled={disabled}
+                    onClick={() => {
+                        if (packagesDetails.value) {
+                            const pck = {
+                                ...packagesDetails.value,
+                                amount:
+                                    packagesDetails.value.amount -
+                                    parseInt(take, 10)
+                            }
+                            const condition =
+                                packagesDetails.value.amount -
+                                parseInt(take, 10)
+
+                            if (condition >= 0) {
+                                if (condition === 0)
+                                    dispatch(
+                                        deletePackage(
+                                            packagesDetails.value.code
+                                        )
+                                    )
+                                else {
+                                    dispatch(setPackage(pck))
+                                    dispatch(updatePackage(pck))
+                                }
+                            }
+                        }
+                    }}
                 >
                     {buttonText}
                 </button>

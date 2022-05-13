@@ -117,13 +117,11 @@ p, span {
     background-color: #F1F1F1;
     border: 0;
     border-radius: 8px;
-    width: 70%;
-    height: 7.5vh;
     margin-top: 2.5vh;
     margin-left: 2.5%;
     display: inline;
     padding-left: 2.5%;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 #form-input:focus {

@@ -5,7 +5,7 @@ interface HeaderProps {
 
 const Header = ({ title }: HeaderProps) => {
     return (
-        <div id="header" className="bg-blue-500">
+        <div className="bg-blue-500 w-full h-[15vh] rounded-lg justify-items-center pt-2 flex">
             <h1 id="title">{title}</h1>
         </div>
     )

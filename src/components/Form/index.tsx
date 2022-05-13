@@ -2,7 +2,13 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useReduxState } from '../../hooks/useReduxState'
 import { setPackage } from '../../store/features/packageDetailsSlice'
-import { deletePackage, updatePackage } from '../../store/features/packageSlice'
+import {
+    asyncAddPackage,
+    asyncDeletePackage,
+    asyncUpdatePackage,
+    updatePackage
+} from '../../store/Package.store'
+// import { deletePackage, updatePackage } from '../../store/features/packageSlice'
 
 interface FormProps {
     placeholder: string
@@ -29,7 +35,8 @@ const Form = ({
             <input
                 type="text"
                 id="form-input"
-                style={{ width: button ? '70%' : '92.5%' }}
+                className="h-14"
+                style={{ width: button ? '73%' : '95%' }}
                 placeholder={placeholder}
                 disabled={disabled}
                 onChange={(e) => onChange(e.target.value)}
@@ -37,7 +44,7 @@ const Form = ({
 
             {button ? (
                 <button
-                    className=" w-24 h-11 ml-5 rounded-md bg-blue-700 text-white font-medium text-xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+                    className=" w-28 h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                     disabled={disabled}
                     onClick={() => {
                         if (packagesDetails.value) {
@@ -47,20 +54,22 @@ const Form = ({
                                     packagesDetails.value.amount -
                                     parseInt(take, 10)
                             }
+
                             const condition =
                                 packagesDetails.value.amount -
                                 parseInt(take, 10)
 
                             if (condition >= 0) {
-                                if (condition === 0)
+                                if (condition === 0) {
                                     dispatch(
-                                        deletePackage(
-                                            packagesDetails.value.code
+                                        asyncDeletePackage(
+                                            packagesDetails.value
                                         )
                                     )
-                                else {
+                                    dispatch(setPackage(null))
+                                } else {
                                     dispatch(setPackage(pck))
-                                    dispatch(updatePackage(pck))
+                                    dispatch(asyncUpdatePackage(pck))
                                 }
                             }
                         }

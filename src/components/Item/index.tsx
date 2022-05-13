@@ -16,7 +16,7 @@ const Item = ({ pck, selected, setSelected }: ItemProps) => {
 
     return (
         <div
-            className="w-96 h-60 bg-white rounded-xl mb-3 p-2"
+            className="w-[26rem] bg-white rounded-xl mb-3 p-2"
             onClick={() => {
                 setSelected()
                 dispatch(setPackage(!selected ? pck : null))

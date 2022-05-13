@@ -1,11 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PackageProps } from '../../types'
+import axios from 'axios'
 
 interface PackageState {
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed'
     value: PackageProps[]
 }
 
-const initialState: PackageState = {
+const initialState = {
     value: [
         {
             name: 'Teste',
@@ -24,11 +26,31 @@ const initialState: PackageState = {
             expiringDate: '27/04/2022',
             manufacturingDate: '27/04/2022',
             origin: 'A'
+        },
+        {
+            name: 'Teste',
+            amount: 11,
+            batch: '3',
+            code: '1012',
+            expiringDate: '27/04/2022',
+            manufacturingDate: '27/04/2022',
+            origin: 'A'
         }
-    ]
-}
+    ],
+    loading: 'idle'
+} as PackageState
 
-export const packagesSlice = createSlice({
+const getPackages = createAsyncThunk(
+    'packages/getPackages',
+    async (thunkAPI) => {
+        const res = await axios.get('https://localhost:4000/stock')
+        if (res) console.log(res.data)
+
+        return res.data
+    }
+)
+
+const packagesSlice = createSlice({
     name: 'packages',
     initialState,
     reducers: {
@@ -54,10 +76,15 @@ export const packagesSlice = createSlice({
 
             if (index !== -1) state.value.splice(index, 1)
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getPackages.fulfilled, (state, action) => {
+            state.loading = 'succeeded'
+        })
     }
 })
 
-export const { addPackage, readPackage, updatePackage, deletePackage } =
-    packagesSlice.actions
+// export const { addPackage, readPackage, updatePackage, deletePackage } =
+//     packagesSlice.actions
 
 export default packagesSlice.reducer

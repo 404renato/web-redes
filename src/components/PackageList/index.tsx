@@ -17,7 +17,7 @@ const PackageList = ({
     const { packages } = useReduxState()
 
     return (
-        <div className="w-[25rem] h-full bg-zinc-700 rounded-lg">
+        <div className="w-[27rem] h-full bg-zinc-700 rounded-lg">
             <Header title="Lista de Pacotes" />
             <div
                 id="package-list-content"
@@ -26,16 +26,16 @@ const PackageList = ({
                 {packages.value
                     .filter((item) => {
                         if (searchCode === '') return true
-                        if (item.code.includes(searchCode)) return item
+                        if (item.id.includes(searchCode)) return item
                     })
                     .map((item) => (
                         <Item
                             pck={item}
-                            selected={selected === item.code}
+                            selected={selected === item.id}
                             setSelected={() => {
-                                selected === item.code
+                                selected === item.id
                                     ? setSelected('')
-                                    : setSelected(item.code)
+                                    : setSelected(item.id)
                             }}
                         />
                     ))}

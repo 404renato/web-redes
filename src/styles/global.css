@@ -133,26 +133,6 @@ p, span {
     opacity: 0.5;
 }
 
-#form-submit {
-    border-radius: 8px;
-    width: 20%;
-    border: 0;
-    height: 8vh;
-    margin-left: 2.5%;
-    background-color: #00FF77;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #FFF;
-}
-
-#form-submit:hover {
-    background-color: #25FF9A;
-}
-
-#form-submit:disabled {
-    background-color: #77FFB7;
-}
-
 #button-submit {
     margin-left: calc(50% - 25%);
     width: 50%;

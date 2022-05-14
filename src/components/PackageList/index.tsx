@@ -1,7 +1,7 @@
 import React from 'react'
-import Item from '../Item'
-import Header from '../Header'
 import { useReduxState } from '../../hooks/useReduxState'
+import Header from '../Header'
+import Item from '../Item'
 
 interface PackageListProps {
     selected: string

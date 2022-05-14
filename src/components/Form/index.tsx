@@ -3,12 +3,9 @@ import { useDispatch } from 'react-redux'
 import { useReduxState } from '../../hooks/useReduxState'
 import { setPackage } from '../../store/features/packageDetailsSlice'
 import {
-    asyncAddPackage,
     asyncDeletePackage,
-    asyncUpdatePackage,
-    updatePackage
+    asyncUpdatePackage
 } from '../../store/Package.store'
-// import { deletePackage, updatePackage } from '../../store/features/packageSlice'
 
 interface FormProps {
     placeholder: string
@@ -44,7 +41,7 @@ const Form = ({
 
             {button ? (
                 <button
-                    className=" w-28 h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+                    className=" w-28 h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-2xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                     disabled={disabled}
                     onClick={() => {
                         if (packagesDetails.value) {

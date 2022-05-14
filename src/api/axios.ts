@@ -1,8 +1,9 @@
-import Axios, { AxiosError, AxiosResponse } from 'axios'
+import Axios from 'axios'
 
 export const getInstance = async () => {
     const axiosInstance = Axios.create({
-        baseURL: 'https://c7e0-2804-18-1852-b14d-44aa-c760-fe75-e287.ngrok.io',
+        baseURL:
+            'https://2b69-2804-431-c7cb-46ff-9c31-eda6-21f8-6830.sa.ngrok.io',
         timeout: 100000,
         headers: {
             'Content-Type': 'application/json'

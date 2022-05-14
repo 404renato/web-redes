@@ -1,9 +1,9 @@
-import React from 'react'
 import Image from 'next/image'
-import CrateIcon from '../../assets/crate-icon.png'
-import { PackageProps } from '../../types'
+import React from 'react'
 import { useDispatch } from 'react-redux'
+import CrateIcon from '../../assets/crate-icon.png'
 import { setPackage } from '../../store/features/packageDetailsSlice'
+import { PackageProps } from '../../types'
 
 interface ItemProps {
     pck: PackageProps

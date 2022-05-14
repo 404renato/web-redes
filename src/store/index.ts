@@ -1,16 +1,7 @@
-import { PackageProps } from './../types/index'
-import {
-    Action,
-    AnyAction,
-    configureStore,
-    Dispatch,
-    ThunkAction,
-    ThunkDispatch
-} from '@reduxjs/toolkit'
-
-import packageSlice, { PackageState } from './Package.store'
-import packageDetailsSlice from './features/packageDetailsSlice'
+import { AnyAction, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
+import packageDetailsSlice from './features/packageDetailsSlice'
+import packageSlice from './Package.store'
 
 const store = configureStore({
     reducer: {

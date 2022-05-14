@@ -1,14 +1,21 @@
-import React, { useState } from 'react'
 import type { NextPage } from 'next'
-import PackageList from '../components/PackageList'
-import Header from '../components/Header'
-import Form from '../components/Form'
 import Head from 'next/head'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import Form from '../components/Form'
+import Header from '../components/Header'
+import PackageList from '../components/PackageList'
+import { asyncGetPackages } from '../store/Package.store'
 
-const Caixa: NextPage = () => {
+const Home: NextPage = () => {
     const [selected, setSelected] = useState('')
     const [searchCode, setSearchCode] = useState('')
     const [take, setTake] = useState('')
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(asyncGetPackages())
+    }, [])
 
     return (
         <div>
@@ -37,18 +44,18 @@ const Caixa: NextPage = () => {
                         />
                     </div>
 
-                    <div className="flex flex-col ml-16 items-center">
+                    <div className="flex flex-col ml-48 items-center">
                         <div>
                             <div id="form-container">
                                 <Header title="Digite o Código do Produto" />
 
                                 <Form
-                                    placeholder="ex: 123456789"
-                                    buttonText="Pesquisar"
-                                    onChange={setSearchCode}
+                                    placeholder="ex: 10"
+                                    onChange={setTake}
+                                    take={take}
                                 />
 
-                                <h1 className="text-2xl ml-3 mt-9 text-blue-500">
+                                <h1 className="text-3xl ml-3 mt-9 text-blue-500">
                                     Quantidade
                                 </h1>
                                 <Form
@@ -66,7 +73,7 @@ const Caixa: NextPage = () => {
                             <form action="/">
                                 <input
                                     type="submit"
-                                    value="Trocar para Modo Estoque"
+                                    value="Trocar para Modo Caixa"
                                     className="w-70 h-24 bg-blue-500 rounded-xl p-5 text-white text-xl font-bold hover:bg-blue-600 transition-colors"
                                 />
                             </form>
@@ -78,4 +85,4 @@ const Caixa: NextPage = () => {
     )
 }
 
-export default Caixa
+export default Home

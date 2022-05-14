@@ -1,7 +1,7 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getInstance } from './../api/axios'
 import { PackageProps } from './../types/index'
-import { AppThunk, AppDispatch } from './index'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch, AppThunk } from './index'
 
 export interface PackageState {
     value: PackageProps[]
@@ -15,13 +15,13 @@ const packageSlice = createSlice({
     name: 'package',
     initialState,
     reducers: {
-        addPackage: (state, action: PayloadAction<PackageProps>) => {
-            state.value.push(action.payload)
-        },
+        // addPackage: (state, action: PayloadAction<PackageProps>) => {
+        //     state.value.push(action.payload)
+        // },
 
-        readPackage: (state, action: PayloadAction<PackageProps>) => {
-            state.value.filter((item) => item === action.payload)
-        },
+        // readPackage: (state, action: PayloadAction<PackageProps>) => {
+        //     state.value.filter((item) => item === action.payload)
+        // },
 
         updatePackage: (state, action: PayloadAction<PackageProps>) => {
             const index = state.value.findIndex(
@@ -32,7 +32,7 @@ const packageSlice = createSlice({
 
         deletePackage: (state, action: PayloadAction<PackageProps>) => {
             const index = state.value.findIndex(
-                (item) => item.code === action.payload.code
+                (item) => item.id === action.payload.id
             )
 
             if (index !== -1) state.value.splice(index, 1)
@@ -45,8 +45,8 @@ const packageSlice = createSlice({
 })
 
 export const {
-    addPackage,
-    readPackage,
+    // addPackage,
+    // readPackage,
     updatePackage,
     deletePackage,
     getPackages
@@ -54,17 +54,20 @@ export const {
 
 export default packageSlice.reducer
 
-export function asyncAddPackage(pck: PackageProps): AppThunk {
-    return async function (dispatch: AppDispatch) {
-        dispatch(addPackage(pck))
-    }
-}
+// export function asyncAddPackage(pck: PackageProps): AppThunk {
+//     return async function (dispatch: AppDispatch) {
+//         const instance = await getInstance()
+//         await instance.post('/stock', pck)
 
-export function asyncReadPackage(pck: PackageProps): AppThunk {
-    return async function (dispatch: AppDispatch) {
-        dispatch(readPackage(pck))
-    }
-}
+//         dispatch(addPackage(pck))
+//     }
+// }
+
+// export function asyncReadPackage(pck: PackageProps): AppThunk {
+//     return async function (dispatch: AppDispatch) {
+//         dispatch(readPackage(pck))
+//     }
+// }
 
 export function asyncUpdatePackage(pck: PackageProps): AppThunk {
     return async function (dispatch: AppDispatch) {
@@ -72,9 +75,6 @@ export function asyncUpdatePackage(pck: PackageProps): AppThunk {
             console.log('aaa')
             const instance = await getInstance()
             const response = await instance.get('/stock')
-            // const response = await axios.get(
-            //     'https://c7e0-2804-18-1852-b14d-44aa-c760-fe75-e287.ngrok.io/stock'
-            // )
             console.log(response.data)
             dispatch(updatePackage(pck))
         } catch (error) {}

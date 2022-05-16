@@ -1,21 +1,21 @@
 import React from 'react'
-import { useReduxState } from '../../hooks/useReduxState'
+import { PackageProps } from '../../types'
 import Header from '../Header'
 import Item from '../Item'
 
 interface PackageListProps {
     selected: string
     setSelected: (selected: string) => void
-    searchCode: string
+    searchCode: string,
+    data: PackageProps[],
 }
 
 const PackageList = ({
     selected,
     setSelected,
-    searchCode
+    searchCode,
+    data
 }: PackageListProps) => {
-    const { packages } = useReduxState()
-
     return (
         <div className="w-[27rem] h-full bg-zinc-700 rounded-lg">
             <Header title="Lista de Pacotes" />
@@ -23,10 +23,10 @@ const PackageList = ({
                 id="package-list-content"
                 className="flex flex-col items-center"
             >
-                {packages.value
+                {data
                     .filter((item) => {
                         if (searchCode === '') return true
-                        if (item.id.includes(searchCode)) return item
+                        return item.batch.includes(searchCode)
                     })
                     .map((item) => (
                         <Item

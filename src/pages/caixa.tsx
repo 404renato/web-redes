@@ -5,17 +5,52 @@ import { useDispatch } from 'react-redux'
 import Form from '../components/Form'
 import Header from '../components/Header'
 import PackageList from '../components/PackageList'
-import { asyncGetPackages } from '../store/Package.store'
+import { useReduxState } from '../hooks/useReduxState'
+import { asyncGetPackages, asyncGetShelf, asyncPurchase } from '../store/Package.store'
+import { Interaction } from '../types'
 
 const Home: NextPage = () => {
     const [selected, setSelected] = useState('')
     const [searchCode, setSearchCode] = useState('')
     const [take, setTake] = useState('')
     const dispatch = useDispatch()
+    const { packages } = useReduxState();
 
     useEffect(() => {
         dispatch(asyncGetPackages())
+        dispatch(asyncGetShelf())
     }, [])
+
+    const disableButton = () => {
+        if (!selected) {
+            return true
+        }
+        if (take === '') {
+            return true
+        }
+        const foundShelf = packages.shelfValues.find(
+            (item) => item.id === selected
+        )
+
+        if ((foundShelf?.amount ?? 0) - parseInt(take) < 0) {
+            return true
+        }
+
+        return false
+    }
+
+    const onSubmit = () => {
+        const foundShelf = packages.shelfValues.find(
+            (item) => item.id === selected
+        )
+        const payload: Interaction = {
+            id: selected,
+            amount: parseInt(take),
+            newShelfAmount: (foundShelf?.amount ?? 0) - parseInt(take),
+            newStockAmount: 0
+        }
+        dispatch(asyncPurchase(payload))
+    }
 
     return (
         <div>
@@ -38,6 +73,7 @@ const Home: NextPage = () => {
                 <div className="flex">
                     <div className="mr-16">
                         <PackageList
+                            data={packages.shelfValues}
                             selected={selected}
                             setSelected={setSelected}
                             searchCode={searchCode}
@@ -47,24 +83,26 @@ const Home: NextPage = () => {
                     <div className="flex flex-col ml-48 items-center">
                         <div>
                             <div id="form-container">
-                                <Header title="Digite o Código do Produto" />
+                                <Header title="Digite o Lote do Produto" />
 
                                 <Form
                                     placeholder="ex: 10"
-                                    onChange={setTake}
-                                    take={take}
+                                    onChange={setSearchCode}
+                                    take={searchCode}
                                 />
 
                                 <h1 className="text-3xl ml-3 mt-9 text-blue-500">
                                     Quantidade
                                 </h1>
                                 <Form
+                                    disabledButton={disableButton()}
                                     placeholder="ex: 10"
                                     buttonText="Vender"
                                     button
                                     disabled={!selected}
                                     onChange={setTake}
                                     take={take}
+                                    onSubmit={onSubmit}
                                 />
                             </div>
                         </div>
@@ -73,7 +111,7 @@ const Home: NextPage = () => {
                             <form action="/">
                                 <input
                                     type="submit"
-                                    value="Trocar para Modo Caixa"
+                                    value="Trocar para Modo Estoque"
                                     className="w-70 h-24 bg-blue-500 rounded-xl p-5 text-white text-xl font-bold hover:bg-blue-600 transition-colors"
                                 />
                             </form>

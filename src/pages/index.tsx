@@ -5,16 +5,48 @@ import { useDispatch } from 'react-redux'
 import Form from '../components/Form'
 import Header from '../components/Header'
 import PackageList from '../components/PackageList'
-import { asyncGetPackages } from '../store/Package.store'
+import { useReduxState } from '../hooks/useReduxState'
+import { asyncGetPackages, asyncGetShelf, asyncWithdrawal } from '../store/Package.store'
+import { Interaction } from '../types'
 
 const Home: NextPage = () => {
     const [selected, setSelected] = useState('')
     const [searchCode, setSearchCode] = useState('')
     const [take, setTake] = useState('')
     const dispatch = useDispatch()
+    const { packages } = useReduxState();
+
+    const disableButton = () => {
+        if (!selected) {
+            return true;
+        }
+        if (take === '') {
+            return true;
+        }
+        const foundStock = packages.value.find((item) => item.id === selected)
+
+        if ((foundStock?.amount ?? 0) - parseInt(take) < 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    const onSubmit = () => {
+        const foundStock = packages.value.find((item) => item.id === selected)
+        const foundShelf = packages.shelfValues.find((item) => item.id === selected)
+        const payload: Interaction = {
+            id: selected,
+            amount: parseInt(take),
+            newShelfAmount: (foundShelf?.amount ?? 0) + parseInt(take),
+            newStockAmount: (foundStock?.amount ?? 0) - parseInt(take),
+        }
+        dispatch(asyncWithdrawal(payload))
+    }
 
     useEffect(() => {
         dispatch(asyncGetPackages())
+        dispatch(asyncGetShelf())
     }, [])
 
     return (
@@ -38,6 +70,7 @@ const Home: NextPage = () => {
                 <div className="flex">
                     <div className="mr-16">
                         <PackageList
+                            data={packages.value}
                             selected={selected}
                             setSelected={setSelected}
                             searchCode={searchCode}
@@ -47,12 +80,12 @@ const Home: NextPage = () => {
                     <div className="flex flex-col ml-48 items-center">
                         <div>
                             <div id="form-container">
-                                <Header title="Digite o Código do Produto" />
+                                <Header title="Digite o Lote do Produto" />
 
                                 <Form
                                     placeholder="ex: 10"
-                                    onChange={setTake}
-                                    take={take}
+                                    onChange={setSearchCode}
+                                    take={searchCode}
                                 />
 
                                 <h1 className="text-3xl ml-3 mt-9 text-blue-500">
@@ -63,8 +96,10 @@ const Home: NextPage = () => {
                                     buttonText="Retirar"
                                     button
                                     disabled={!selected}
+                                    disabledButton={disableButton()}
                                     onChange={setTake}
                                     take={take}
+                                    onSubmit={onSubmit}
                                 />
                             </div>
                         </div>

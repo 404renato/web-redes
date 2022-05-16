@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getInstance } from './../api/axios'
-import { PackageProps } from './../types/index'
+import { Interaction, PackageProps } from './../types/index'
 import { AppDispatch, AppThunk } from './index'
 
 export interface PackageState {
-    value: PackageProps[]
+    value: PackageProps[],
+    shelfValues: PackageProps[]
 }
 
 const initialState = {
-    value: []
+    value: [],
+    shelfValues: [],
 } as PackageState
 
 const packageSlice = createSlice({
@@ -40,6 +42,9 @@ const packageSlice = createSlice({
 
         getPackages: (state, action: PayloadAction<PackageProps[]>) => {
             state.value = action.payload
+        },
+        getShelfProducts: (state, action: PayloadAction<PackageProps[]>) => {
+            state.shelfValues = action.payload
         }
     }
 })
@@ -49,7 +54,8 @@ export const {
     // readPackage,
     updatePackage,
     deletePackage,
-    getPackages
+    getPackages,
+    getShelfProducts
 } = packageSlice.actions
 
 export default packageSlice.reducer
@@ -94,5 +100,35 @@ export function asyncGetPackages(): AppThunk {
             const response = await instance.get('/stock')
             dispatch(getPackages(response.data))
         } catch (error) {}
+    }
+}
+
+export function asyncGetShelf(): AppThunk {
+    return async function (dispatch: AppDispatch) {
+        try {
+            const instance = await getInstance()
+            const response = await instance.get('/shelf')
+            dispatch(getShelfProducts(response.data))
+        } catch (error) {}
+    }
+}
+
+export function asyncWithdrawal(data: Interaction): AppThunk {
+    return async function (dispatch: AppDispatch) {
+        try {
+            const instance = await getInstance()
+            await instance.put('/shelf/withdrawal', data)
+        } catch (error) {}
+        dispatch(asyncGetPackages())
+    }
+}
+
+export function asyncPurchase(data: Interaction): AppThunk {
+    return async function (dispatch: AppDispatch) {
+        try {
+            const instance = await getInstance()
+            await instance.put('/shelf/purchase', data)
+        } catch (error) {}
+        dispatch(asyncGetShelf())
     }
 }

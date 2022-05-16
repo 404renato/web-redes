@@ -1,28 +1,27 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useReduxState } from '../../hooks/useReduxState'
-import { setPackage } from '../../store/features/packageDetailsSlice'
-import {
-    asyncDeletePackage,
-    asyncUpdatePackage
-} from '../../store/Package.store'
 
 interface FormProps {
     placeholder: string
     buttonText?: string
     disabled?: boolean
+    disabledButton?: boolean,
     button?: boolean
     onChange: (text: string) => void
-    take?: string
+    take?: string,
+    onSubmit?: ()=> void
 }
 
 const Form = ({
     placeholder,
     buttonText,
     disabled = false,
+    disabledButton = false,
     button,
     onChange,
-    take = ''
+    take = '',
+    onSubmit
 }: FormProps) => {
     const { packagesDetails } = useReduxState()
     const dispatch = useDispatch()
@@ -42,35 +41,8 @@ const Form = ({
             {button ? (
                 <button
                     className=" w-28 h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-2xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
-                    disabled={disabled}
-                    onClick={() => {
-                        if (packagesDetails.value) {
-                            const pck = {
-                                ...packagesDetails.value,
-                                amount:
-                                    packagesDetails.value.amount -
-                                    parseInt(take, 10)
-                            }
-
-                            const condition =
-                                packagesDetails.value.amount -
-                                parseInt(take, 10)
-
-                            if (condition >= 0) {
-                                if (condition === 0) {
-                                    dispatch(
-                                        asyncDeletePackage(
-                                            packagesDetails.value
-                                        )
-                                    )
-                                    dispatch(setPackage(null))
-                                } else {
-                                    dispatch(setPackage(pck))
-                                    dispatch(asyncUpdatePackage(pck))
-                                }
-                            }
-                        }
-                    }}
+                    disabled={disabledButton}
+                    onClick={onSubmit}
                 >
                     {buttonText}
                 </button>

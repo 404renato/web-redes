@@ -8,3 +8,10 @@ export type PackageProps = {
     expiringDate: string
     manufacturingDate: string
 }
+
+export type Interaction = {
+    id: string,
+    amount: number,
+    newStockAmount?: number,
+    newShelfAmount: number
+}

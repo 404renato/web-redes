@@ -6,7 +6,7 @@ import Form from '../components/Form'
 import Header from '../components/Header'
 import PackageList from '../components/PackageList'
 import { useReduxState } from '../hooks/useReduxState'
-import { asyncGetPackages, asyncGetShelf, asyncWithdrawal } from '../store/Package.store'
+import { asyncTables, asyncWithdrawal } from '../store/Package.store'
 import { Interaction } from '../types'
 
 const Home: NextPage = () => {
@@ -45,8 +45,7 @@ const Home: NextPage = () => {
     }
 
     useEffect(() => {
-        dispatch(asyncGetPackages())
-        dispatch(asyncGetShelf())
+        dispatch(asyncTables())
     }, [])
 
     return (

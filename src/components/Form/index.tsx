@@ -40,7 +40,7 @@ const Form = ({
 
             {button ? (
                 <button
-                    className=" w-28 h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-2xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+                    className="w-[18%] h-14 ml-5 rounded-md bg-blue-700 text-white font-medium text-2xl hover:bg-blue-600 transition-colors disabled:bg-blue-300"
                     disabled={disabledButton}
                     onClick={onSubmit}
                 >

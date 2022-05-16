@@ -132,3 +132,16 @@ export function asyncPurchase(data: Interaction): AppThunk {
         dispatch(asyncGetShelf())
     }
 }
+
+export function asyncTables(): AppThunk {
+    return async function (dispatch: AppDispatch) {
+        try {
+            const instance = await getInstance()
+            let response = await instance.get('/shelf')
+            dispatch(getShelfProducts(response.data))
+            response = await instance.get('/stock')
+            dispatch(getPackages(response.data))
+        } catch (error) {}
+        dispatch(asyncGetShelf())
+    }
+}
